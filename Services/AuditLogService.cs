@@ -1,0 +1,1 @@
+namespace PointOfSalesSystem.Services { public class AuditLogService { public void LogAction(string user, string action) { } } }

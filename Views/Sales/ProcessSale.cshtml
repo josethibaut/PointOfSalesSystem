@@ -1,0 +1,26 @@
+@model PointOfSalesSystem.Models.Sale
+
+<h2>Process Sale</h2>
+
+<form method="post">
+    <label>Total Amount:</label>
+    <input type="text" asp-for="TotalAmount" readonly />
+
+    <label>VAT Amount:</label>
+    <input type="text" asp-for="VATAmount" readonly />
+
+    <label>Amount Received:</label>
+    <input type="text" asp-for="AmountReceived" />
+
+    <label>Change Due:</label>
+    <input type="text" asp-for="ChangeDue" readonly />
+
+    <label>Payment Method:</label>
+    <select asp-for="PaymentMethod">
+        <option>Cash</option>
+        <option>Card</option>
+        <option>Phone Money</option>
+    </select>
+
+    <button type="submit">Complete Sale</button>
+</form>

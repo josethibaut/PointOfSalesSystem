@@ -1,0 +1,1 @@
+namespace PointOfSalesSystem.Services { public class LoyaltyService { public int CalculateLoyaltyPoints(decimal purchase) => (int)(purchase / 100); } }

@@ -1,0 +1,1 @@
+namespace PointOfSalesSystem.Services { public class VatService { public decimal CalculateVAT(decimal price, decimal rate) => price * (rate / 100); } }

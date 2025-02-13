@@ -8,13 +8,15 @@ namespace PointOfSalesSystem.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<Product> Products { get; set; }
-        public DbSet<Sale> Sales { get; set; }   // ✅ Ensure Sale is here
+        public DbSet<Sale> Sales { get; set; }
         public DbSet<SaleItem> SaleItems { get; set; }
-        public DbSet<VatReturn> VatReturns { get; set; }
-
+        public DbSet<VatReturn> VatReturns { get; set; }  // ✅ Ensure this exists
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<VatReturn>()
+                .HasKey(v => v.VatReturnId);  // ✅ Explicitly set the primary key
+
             base.OnModelCreating(modelBuilder);
         }
     }

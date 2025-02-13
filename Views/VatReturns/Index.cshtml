@@ -1,5 +1,27 @@
-﻿@{
+﻿@model IEnumerable<PointOfSalesSystem.Models.VatReturn>
+
+@{
     ViewData["Title"] = "VAT Returns";
 }
+
 <h2>VAT Returns</h2>
-<p>Manage VAT returns here.</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Sale ID</th>
+            <th>VAT Amount</th>
+            <th>Return Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.SaleId</td>
+                <td>@item.VATAmount.ToString("C")</td>
+                <td>@item.ReturnDate.ToShortDateString()</td>
+            </tr>
+        }
+    </tbody>
+</table>

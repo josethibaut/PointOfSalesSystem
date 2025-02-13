@@ -167,6 +167,31 @@ namespace PointOfSalesSystem.Controllers
             return RedirectToAction("Index");
         }
 
+        public IActionResult CashierDesk()
+        {
+            var products = _context.Products.ToList();
+            var cartItems = GetCartItemsFromSession(); // Implement this method based on your session management
+            var currentSale = GetCurrentSale(); // Implement this method to retrieve the current sale
+
+            var viewModel = new CashierViewModel
+            {
+                Products = products,
+                CartItems = cartItems,
+                CurrentSale = currentSale
+            };
+
+            return View(viewModel);
+        }
+
+        private Sale GetCurrentSale()
+        {
+            throw new NotImplementedException();
+        }
+
+        private List<CartItem> GetCartItemsFromSession()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
    

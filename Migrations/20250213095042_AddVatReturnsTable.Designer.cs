@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PointOfSalesSystem.Data;
 
@@ -11,9 +12,11 @@ using PointOfSalesSystem.Data;
 namespace PointOfSalesSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250213095042_AddVatReturnsTable")]
+    partial class AddVatReturnsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -110,11 +113,11 @@ namespace PointOfSalesSystem.Migrations
 
             modelBuilder.Entity("PointOfSalesSystem.Models.VatReturn", b =>
                 {
-                    b.Property<int>("VatReturnId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VatReturnId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("ReturnDate")
                         .HasColumnType("datetime2");
@@ -122,10 +125,10 @@ namespace PointOfSalesSystem.Migrations
                     b.Property<int>("SaleId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("VatAmount")
+                    b.Property<decimal>("VATAmount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("VatReturnId");
+                    b.HasKey("Id");
 
                     b.HasIndex("SaleId");
 

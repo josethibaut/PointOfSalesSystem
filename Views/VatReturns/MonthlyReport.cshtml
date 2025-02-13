@@ -1,0 +1,27 @@
+﻿@model IEnumerable<PointOfSalesSystem.Models.MonthlyVatReport>
+
+@{
+    ViewData["Title"] = "Monthly VAT Report";
+}
+
+<h2>Monthly VAT Report</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Month</th>
+            <th>Total VAT Amount</th>
+            <th>Total Transactions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var report in Model)
+        {
+            <tr>
+                <td>@report.MonthYear</td>
+                <td>@report.TotalVATAmount.ToString("C")</td>
+                <td>@report.TransactionCount</td>
+            </tr>
+        }
+    </tbody>
+</table>

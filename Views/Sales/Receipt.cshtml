@@ -2,12 +2,6 @@
 
 <h2>Receipt</h2>
 
-<form asp-controller="Cashier" asp-action="Receipt" method="get">
-    <input type="hidden" name="id" value="@Model.SaleId" />
-    <button type="submit" class="btn btn-primary">View Receipt</button>
-</form>
-
-
 <p><strong>Total Amount:</strong> @Model.TotalAmount.ToString("C")</p>
 <p><strong>VAT Amount:</strong> @Model.VATAmount.ToString("C")</p>
 <p><strong>Amount Received:</strong> @Model.AmountReceived.ToString("C")</p>
@@ -15,7 +9,7 @@
 <p><strong>Payment Method:</strong> @Model.PaymentMethod</p>
 
 <h3>Items Purchased:</h3>
-<table class="table table-bordered">
+<table>
     <thead>
         <tr>
             <th>Product</th>

@@ -42,11 +42,23 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseSession();
+app.MapControllerRoute(
+    name: "vatreturns",
+    pattern: "VatReturns/{action=Index}/{id?}",
+    defaults: new { controller = "VatReturns", action = "Index" }
+);
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
+
+app.MapControllerRoute(
+    name: "vat-monthly",
+    pattern: "VatReturns/MonthlyReport",
+    defaults: new { controller = "VatReturns", action = "MonthlyReport" }
+);
+
 
 
 app.Run();

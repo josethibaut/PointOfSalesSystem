@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "VAT Report";
+}
+
+<h2>@Model.ReportName</h2>
+<p><strong>Total VAT Collected:</strong> @Model.Amount.ToString("C")</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Sale ID</th>
+            <th>VAT Amount</th>
+            <th>Return Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var vatReturn in Model.VatReturns)
+        {
+            <tr>
+                <td>@vatReturn.SaleId</td>
+                <td>@vatReturn.VATAmount.ToString("C")</td>
+                <td>@vatReturn.ReturnDate.ToString("yyyy-MM-dd")</td>
+            </tr>
+        }
+    </tbody>
+</table>

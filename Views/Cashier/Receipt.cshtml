@@ -1,13 +1,9 @@
-@model PointOfSalesSystem.Models.Sale
+﻿@model PointOfSalesSystem.Models.Sale
 
 <h2>Receipt</h2>
 
-<form asp-controller="Cashier" asp-action="Receipt" method="get">
-    <input type="hidden" name="id" value="@Model.SaleId" />
-    <button type="submit" class="btn btn-primary">View Receipt</button>
-</form>
-
-
+<p><strong>Sale ID:</strong> @Model.SaleId</p>
+<p><strong>Date:</strong> @Model.SaleDate.ToString("dd/MM/yyyy HH:mm")</p>
 <p><strong>Total Amount:</strong> @Model.TotalAmount.ToString("C")</p>
 <p><strong>VAT Amount:</strong> @Model.VATAmount.ToString("C")</p>
 <p><strong>Amount Received:</strong> @Model.AmountReceived.ToString("C")</p>
@@ -36,3 +32,5 @@
         }
     </tbody>
 </table>
+
+<a asp-controller="Cashier" asp-action="Index" class="btn btn-primary">Back to Cashier</a>

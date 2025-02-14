@@ -1,26 +1,42 @@
-﻿@{
-    ViewData["Title"] = "VAT Report";
-}
+﻿@model VatReportModel
 
-<h2>@Model.ReportName</h2>
-<p><strong>Total VAT Collected:</strong> @Model.Amount.ToString("C")</p>
+<h2>Monthly VAT Report</h2>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Sale ID</th>
-            <th>VAT Amount</th>
-            <th>Return Date</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var vatReturn in Model.VatReturns)
-        {
+<form asp-controller="VatReport" asp-action="Index" method="get">
+    <label>Start Date:</label>
+    <input type="date" name="startDate" value="@Model.StartDate.ToString("yyyy-MM-dd")" required />
+
+    <label>End Date:</label>
+    <input type="date" name="endDate" value="@Model.EndDate.ToString("yyyy-MM-dd")" required />
+
+    <button type="submit">Filter</button>
+</form>
+
+<h3>Total VAT Collected: Rs @Model.Amount</h3>
+
+@if (Model.VatReturns.Any())
+{
+    <table>
+        <thead>
             <tr>
-                <td>@vatReturn.SaleId</td>
-                <td>@vatReturn.VATAmount.ToString("C")</td>
-                <td>@vatReturn.ReturnDate.ToString("yyyy-MM-dd")</td>
+                <th>Sale ID</th>
+                <th>VAT Amount</th>
+                <th>Return Date</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.VatReturns)
+            {
+                <tr>
+                    <td>@item.SaleId</td>
+                    <td>@item.VATAmount</td>
+                    <td>@item.ReturnDate.ToString("yyyy-MM-dd")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p style="color:red;">No VAT records found for the selected period.</p>
+}

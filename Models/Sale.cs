@@ -7,30 +7,20 @@ namespace PointOfSalesSystem.Models
 {
     public class Sale
     {
-        internal bool VatReturned;
-
         [Key]
         public int SaleId { get; set; }
 
-        public DateTime SaleDate { get; set; }
+        [ForeignKey("Customer")]
+        public int CustomerId { get; set; }
+        public Customer Customer { get; set; }
 
-        [Required]
         public decimal TotalAmount { get; set; }
-
-        [Required]
         public decimal VATAmount { get; set; }
-
-        [Required]
         public decimal AmountReceived { get; set; }
-
-        [Required]
         public decimal ChangeDue { get; set; }
-
-        [Required]
-        [StringLength(50)]
         public string PaymentMethod { get; set; }
+        public DateTime SaleDate { get; set; } = DateTime.Now;
 
-        // 🏷️ Relationship: Sale contains multiple SaleItems
         public List<SaleItem> SaleItems { get; set; } = new List<SaleItem>();
     }
 }

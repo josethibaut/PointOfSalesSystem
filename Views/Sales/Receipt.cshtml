@@ -9,7 +9,7 @@
 <p><strong>Payment Method:</strong> @Model.PaymentMethod</p>
 
 <h3>Items Purchased:</h3>
-<table>
+<table class="table table-bordered">
     <thead>
         <tr>
             <th>Product</th>
@@ -30,3 +30,6 @@
         }
     </tbody>
 </table>
+
+<h3>Loyalty Points Earned</h3>
+<p>For this sale: <strong>@(Model.TotalAmount / 10) points</strong></p>

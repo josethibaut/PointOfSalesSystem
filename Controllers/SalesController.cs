@@ -1,49 +1,93 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using PointOfSalesSystem.Data;
 using PointOfSalesSystem.Models;
+using PointOfSalesSystem.Models.ViewModels;
+using System.Linq;
 
 namespace PointOfSalesSystem.Controllers
 {
     public class SalesController : Controller
     {
-        // Display the sale processing form
+        private readonly ApplicationDbContext _context;
+
+        public SalesController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        // Display Sale Processing Form
         [HttpGet]
         public IActionResult ProcessSale()
         {
-            var sale = new Sale();
-            // Initialize sale properties if needed
-            return View(sale);
+            var viewModel = new SalesViewModel
+            {
+                Customers = _context.Customers.ToList()
+            };
+            return View(viewModel);
         }
 
-        // Handle form submission
+        // Process Sale
         [HttpPost]
-        public IActionResult ProcessSale(Sale sale)
+        public IActionResult ProcessSale(SalesViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                // Calculate VAT (assuming a 15% rate)
-                sale.VATAmount = sale.TotalAmount * 0.15m;
-                // Calculate change due
-                sale.ChangeDue = sale.AmountReceived - (sale.TotalAmount + sale.VATAmount);
+                var customer = _context.Customers.FirstOrDefault(c => c.CustomerId == viewModel.CustomerId);
+                if (customer == null)
+                {
+                    return NotFound("Customer not found.");
+                }
 
-                // Save the sale to the database (implementation depends on your data access strategy)
+                // Calculate VAT
+                decimal vatRate = 0.15m;
+                decimal vatAmount = viewModel.TotalAmount * vatRate;
+                decimal totalWithVAT = viewModel.TotalAmount + vatAmount;
+                decimal changeDue = viewModel.AmountReceived - totalWithVAT;
 
-                // Redirect to the receipt view
+                // Save Sale
+                var sale = new Sale
+                {
+                    CustomerId = viewModel.CustomerId,
+                    TotalAmount = viewModel.TotalAmount,
+                    VATAmount = vatAmount,
+                    AmountReceived = viewModel.AmountReceived,
+                    ChangeDue = changeDue,
+                    PaymentMethod = viewModel.PaymentMethod,
+                    SaleDate = DateTime.Now
+                };
+
+                _context.Sales.Add(sale);
+                _context.SaveChanges();
+
+                // Earn Loyalty Points
+                int pointsEarned = (int)(viewModel.TotalAmount / 10);
+                customer.LoyaltyPoints += pointsEarned;
+
+                _context.LoyaltyTransactions.Add(new LoyaltyTransaction
+                {
+                    CustomerId = customer.CustomerId,
+                    SaleId = sale.SaleId,
+                    PointsEarned = pointsEarned,
+                    TransactionDate = System.DateTime.Now
+                });
+
+                _context.SaveChanges();
                 return RedirectToAction("Receipt", new { id = sale.SaleId });
             }
-            return View(sale);
+
+            viewModel.Customers = _context.Customers.ToList();
+            return View(viewModel);
         }
 
-        // Display the receipt
+        // Display Receipt
         public IActionResult Receipt(int id)
         {
-            // Retrieve the sale from the database using the id
-            var sale = new Sale(); // Replace with actual retrieval logic
-
+            var sale = _context.Sales.Include(s => s.Customer).FirstOrDefault(s => s.SaleId == id);
             if (sale == null)
             {
                 return NotFound();
             }
-
             return View(sale);
         }
     }

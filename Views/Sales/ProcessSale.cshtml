@@ -1,31 +1,37 @@
-@model PointOfSalesSystem.Models.Sale
+@model PointOfSalesSystem.Models.ViewModels.SalesViewModel
 
 <h2>Process Sale</h2>
 
-<form method="post">
+<form asp-action="ProcessSale" asp-controller="Sales" method="post">
+    <div>
+        <label>Select Customer:</label>
+        <select asp-for="CustomerId" class="form-control">
+            <option value="">-- Select Customer --</option>
+            @foreach (var customer in Model.Customers)
+            {
+                <option value="@customer.CustomerId">@customer.Name</option>
+            }
+        </select>
+    </div>
+
     <div>
         <label>Total Amount:</label>
-        <input type="text" asp-for="TotalAmount" readonly />
+        <input type="number" asp-for="TotalAmount" class="form-control" required />
     </div>
-    <div>
-        <label>VAT Amount:</label>
-        <input type="text" asp-for="VATAmount" readonly />
-    </div>
+
     <div>
         <label>Amount Received:</label>
-        <input type="number" asp-for="AmountReceived" required />
+        <input type="number" asp-for="AmountReceived" class="form-control" required />
     </div>
-    <div>
-        <label>Change Due:</label>
-        <input type="text" asp-for="ChangeDue" readonly />
-    </div>
+
     <div>
         <label>Payment Method:</label>
-        <select asp-for="PaymentMethod">
+        <select asp-for="PaymentMethod" class="form-control">
             <option>Cash</option>
             <option>Card</option>
             <option>Phone Money</option>
         </select>
     </div>
-    <button type="submit">Complete Sale</button>
+
+    <button type="submit" class="btn btn-primary">Complete Sale</button>
 </form>

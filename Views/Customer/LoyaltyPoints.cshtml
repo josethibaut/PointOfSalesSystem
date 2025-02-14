@@ -1,0 +1,21 @@
+﻿@model Customer
+
+<h2>Loyalty Points for @Model.Name</h2>
+<p>Total Points: @Model.LoyaltyPoints</p>
+
+<h3>Transaction History</h3>
+<table>
+    <tr>
+        <th>Date</th>
+        <th>Points Earned</th>
+        <th>Points Redeemed</th>
+    </tr>
+    @foreach (var transaction in Model.LoyaltyTransactions)
+    {
+        <tr>
+            <td>@transaction.TransactionDate.ToShortDateString()</td>
+            <td>@transaction.PointsEarned</td>
+            <td>@transaction.PointsRedeemed</td>
+        </tr>
+    }
+</table>

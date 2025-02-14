@@ -1,0 +1,24 @@
+﻿@model VatReportModel
+
+<h2>@Model.ReportName</h2>
+<p><strong>Total VAT Collected:</strong> Rs @Model.Amount.ToString("N2")</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Sale ID</th>
+            <th>VAT Amount</th>
+            <th>Return Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var vatReturn in Model.VatReturns)
+        {
+            <tr>
+                <td>@vatReturn.SaleId</td>
+                <td>@vatReturn.VATAmount.ToString("N2")</td>
+                <td>@vatReturn.ReturnDate.ToShortDateString()</td>
+            </tr>
+        }
+    </tbody>
+</table>

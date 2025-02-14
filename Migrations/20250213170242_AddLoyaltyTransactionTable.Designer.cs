@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PointOfSalesSystem.Data;
 
@@ -11,9 +12,11 @@ using PointOfSalesSystem.Data;
 namespace PointOfSalesSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250213170242_AddLoyaltyTransactionTable")]
+    partial class AddLoyaltyTransactionTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,7 +25,27 @@ namespace PointOfSalesSystem.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("LoyaltyTransaction", b =>
+            modelBuilder.Entity("PointOfSalesSystem.Models.Customer", b =>
+                {
+                    b.Property<int>("CustomerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerId"));
+
+                    b.Property<int>("LoyaltyPoints")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CustomerId");
+
+                    b.ToTable("Customers");
+                });
+
+            modelBuilder.Entity("PointOfSalesSystem.Models.LoyaltyTransaction", b =>
                 {
                     b.Property<int>("TransactionId")
                         .ValueGeneratedOnAdd()
@@ -52,26 +75,6 @@ namespace PointOfSalesSystem.Migrations
                     b.HasIndex("SaleId");
 
                     b.ToTable("LoyaltyTransactions");
-                });
-
-            modelBuilder.Entity("PointOfSalesSystem.Models.Customer", b =>
-                {
-                    b.Property<int>("CustomerId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerId"));
-
-                    b.Property<int>("LoyaltyPoints")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("CustomerId");
-
-                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("PointOfSalesSystem.Models.Product", b =>
@@ -254,7 +257,7 @@ namespace PointOfSalesSystem.Migrations
                     b.ToTable("VatReturns");
                 });
 
-            modelBuilder.Entity("LoyaltyTransaction", b =>
+            modelBuilder.Entity("PointOfSalesSystem.Models.LoyaltyTransaction", b =>
                 {
                     b.HasOne("PointOfSalesSystem.Models.Customer", "Customer")
                         .WithMany("LoyaltyTransactions")

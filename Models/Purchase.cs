@@ -4,18 +4,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PointOfSalesSystem.Models
 {
-    public class VatReturn
+    public class Purchase
     {
         [Key]
-        public int VatReturnId { get; set; }
+        public int PurchaseId { get; set; }
 
-        [ForeignKey("Sale")]
-        public int SaleId { get; set; }
-        public Sale Sale { get; set; }
+        [Required]
+        public decimal TotalAmount { get; set; }
 
         public decimal VATAmount { get; set; }
 
         [Required]
-        public DateTime ReturnDate { get; set; } = DateTime.Now;
+        public DateTime PurchaseDate { get; set; } = DateTime.Now;
     }
 }

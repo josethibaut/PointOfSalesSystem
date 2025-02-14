@@ -8,16 +8,15 @@ namespace PointOfSalesSystem.Models
         [Key]
         public int SaleItemId { get; set; }
 
+        [ForeignKey("Sale")]
         public int SaleId { get; set; }
-        [ForeignKey("SaleId")]
         public Sale Sale { get; set; }
 
+        [ForeignKey("Product")]
         public int ProductId { get; set; }
-        [ForeignKey("ProductId")]
         public Product Product { get; set; }
 
         public int Quantity { get; set; }
         public decimal Price { get; set; }
-        public decimal TotalPrice => Quantity * Price; // Automatically calculated
     }
 }

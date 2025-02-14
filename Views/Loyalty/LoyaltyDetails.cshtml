@@ -1,0 +1,34 @@
+﻿@model PointOfSalesSystem.Models.Customer
+
+<h2 class="text-primary">Loyalty Points for @Model.Name</h2>
+<p>Total Points: <strong>@Model.LoyaltyPoints</strong></p>
+
+<h3 class="mt-4">Transaction History</h3>
+@if (Model.LoyaltyTransactions.Any())
+{
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Date</th>
+                <th>Points Earned</th>
+                <th>Points Redeemed</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var transaction in Model.LoyaltyTransactions)
+            {
+                <tr>
+                    <td>@transaction.TransactionDate.ToShortDateString()</td>
+                    <td>@transaction.PointsEarned</td>
+                    <td>@transaction.PointsRedeemed</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No loyalty transactions found.</p>
+}
+
+<a asp-action="Index" class="btn btn-secondary">Back to Loyalty Clients</a>

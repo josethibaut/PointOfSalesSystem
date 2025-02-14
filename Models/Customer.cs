@@ -1,9 +1,18 @@
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
 namespace PointOfSalesSystem.Models
 {
     public class Customer
     {
-        public int Id { get; set; }
+        [Key]
+        public int CustomerId { get; set; }
+
+        [Required]
         public string Name { get; set; }
-        public int LoyaltyPoints { get; set; }
+
+        public int LoyaltyPoints { get; set; } = 0;
+
+        public List<LoyaltyTransaction> LoyaltyTransactions { get; set; } = new List<LoyaltyTransaction>();
     }
 }

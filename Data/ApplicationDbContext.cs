@@ -32,6 +32,47 @@ namespace PointOfSalesSystem.Data
                 .HasMany(s => s.SaleItems)
                 .WithOne(si => si.Sale)
                 .HasForeignKey(si => si.SaleId);
+
+          
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Product>()
+                .Property(p => p.Price)
+                .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<Purchase>()
+                .Property(p => p.TotalAmount)
+                .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<Purchase>()
+                .Property(p => p.VATAmount)
+                .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<Sale>()
+                .Property(s => s.AmountReceived)
+                .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<Sale>()
+                .Property(s => s.ChangeDue)
+                .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<Sale>()
+                .Property(s => s.TotalAmount)
+                .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<Sale>()
+                .Property(s => s.VATAmount)
+                .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<SaleItem>()
+                .Property(si => si.Price)
+                .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<VatReturn>()
+                .Property(v => v.VATAmount)
+                .HasColumnType("decimal(18,2)");
         }
+
     }
 }
+

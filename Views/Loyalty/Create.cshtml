@@ -1,0 +1,23 @@
+﻿@model PointOfSalesSystem.Models.Customer
+
+<h2>Register Loyalty Member</h2>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+<form asp-action="Create" asp-controller="Loyalty" method="post">
+    <div class="form-group">
+        <label>Name:</label>
+        <input asp-for="Name" class="form-control" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Register</button>
+</form>
+
+<a asp-action="Index" asp-controller="Cashier" class="btn btn-secondary">Back to Cashier</a>

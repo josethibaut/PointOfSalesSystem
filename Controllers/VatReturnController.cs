@@ -18,14 +18,14 @@ namespace PointOfSalesSystem.Controllers
             _context = context;
         }
 
-        // Index - Default VAT Returns View
+        // ✅ Index - Default VAT Returns View
         public async Task<IActionResult> Index()
         {
             var vatReturns = await _context.VatReturns.ToListAsync();
             return View(vatReturns);
         }
 
-        // 📌 Monthly VAT Report - Groups data by month
+        // ✅ Monthly VAT Report - Groups data by month
         public async Task<IActionResult> MonthlyReport()
         {
             var monthlyVatData = await _context.VatReturns

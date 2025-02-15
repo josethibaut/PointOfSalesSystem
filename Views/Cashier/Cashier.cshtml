@@ -5,7 +5,7 @@
 
 <h2>Cashier Desk</h2>
 
-<!-- Add to Cart Form -->
+<!-- ✅ Add to Cart Form -->
 <form asp-action="AddToCart" asp-controller="Cashier" method="post">
     <label for="product">Select a Product:</label>
     <select id="product" name="productId" class="form-control" required>
@@ -22,14 +22,7 @@
     <button type="submit" class="btn btn-primary">Add to Cart</button>
 </form>
 
-<!-- Barcode Scan Form -->
-<form asp-action="ScanBarcode" asp-controller="Cashier" method="post">
-    <label for="barcode">Scan Barcode:</label>
-    <input type="text" id="barcode" name="barcode" class="form-control" required />
-    <button type="submit" class="btn btn-success">Scan</button>
-</form>
-
-<!-- Shopping Cart -->
+<!-- ✅ Shopping Cart -->
 <h3>Shopping Cart</h3>
 @if (cart != null && cart.Count > 0)
 {
@@ -62,7 +55,8 @@
         </tbody>
     </table>
 
-    <form asp-action="Checkout" asp-controller="Cashier" method="post">
+    <!-- Complete Sale Form -->
+    <form asp-action="CompleteSale" asp-controller="Cashier" method="post">
         <label for="paymentMethod">Select Payment Method:</label>
         <select name="paymentMethod" class="form-control" required>
             <option value="">-- Select Payment Method --</option>
@@ -72,16 +66,11 @@
         </select>
 
         <button type="submit" class="btn btn-primary">Complete Sale</button>
-        <td>
-            <form asp-action="ProcessVatReturn" asp-controller="Cashier" method="post">
-              
-                <button type="submit" class="btn btn-warning">Process VAT Return</button>
-            </form>
-        </td>
-
     </form>
 }
 else
 {
     <p>No items in cart.</p>
 }
+
+

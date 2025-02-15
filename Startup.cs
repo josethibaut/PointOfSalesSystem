@@ -50,6 +50,11 @@ namespace PointOfSalesSystem // Fixed namespace
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddSession();
+            // Add services to the container.
+            services.AddDistributedMemoryCache();
+            services.AddSession();
+            services.AddHttpContextAccessor();
+
 
             services.ConfigureApplicationCookie(options =>
             {

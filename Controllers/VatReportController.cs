@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace PointOfSalesSystem.Controllers
 {
-    public class VatReportController : Controller
+    public class VatReportsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public VatReportController(ApplicationDbContext context)
+        public VatReportsController(ApplicationDbContext context)
         {
             _context = context;
         }

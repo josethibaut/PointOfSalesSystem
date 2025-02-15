@@ -4,24 +4,33 @@
     ViewData["Title"] = "VAT Returns";
 }
 
-<h2>VAT Returns</h2>
+<h2 class="mb-3">VAT Returns</h2>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Sale ID</th>
-            <th>VAT Amount</th>
-            <th>Return Date</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+@if (!Model.Any())
+{
+    <div class="alert alert-warning" role="alert">
+        No VAT returns available.
+    </div>
+}
+else
+{
+    <table class="table table-bordered table-striped table-hover">
+        <thead class="thead-dark">
             <tr>
-                <td>@item.SaleId</td>
-                <td>@item.VATAmount.ToString("C")</td>
-                <td>@item.ReturnDate.ToShortDateString()</td>
+                <th>Sale ID</th>
+                <th>VAT Amount</th>
+                <th>Return Date</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.SaleId</td>
+                    <td>@item.VATAmount.ToString("C", new System.Globalization.CultureInfo("en-MU"))</td>
+                    <td>@item.ReturnDate.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

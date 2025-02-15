@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using PointOfSalesSystem.Data;
 using PointOfSalesSystem.Models;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace PointOfSalesSystem.Controllers
@@ -16,27 +15,37 @@ namespace PointOfSalesSystem.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        // ✅ Display Loyalty Registration Form
+        public IActionResult Create()
         {
-            var customers = await _context.Customers
-                .Include(c => c.LoyaltyTransactions)
-                .ToListAsync();
-
-            return View(customers);
+            return View();
         }
 
-        public async Task<IActionResult> LoyaltyDetails(int id)
+        // ✅ Process New Loyalty Member Registration
+        [HttpPost]
+        public async Task<IActionResult> Create(Customer model)
         {
-            var customer = await _context.Customers
-                .Include(c => c.LoyaltyTransactions)
-                .FirstOrDefaultAsync(c => c.CustomerId == id);
-
-            if (customer == null)
+            if (!ModelState.IsValid)
             {
-                return NotFound();
+                return View(model);
             }
 
-            return View(customer);
+            // Prevent duplicate entries
+            var existingCustomer = await _context.Customers
+                .FirstOrDefaultAsync(c => c.Name == model.Name);
+
+            if (existingCustomer != null)
+            {
+                ModelState.AddModelError("Name", "Customer already exists.");
+                return View(model);
+            }
+
+            model.LoyaltyPoints = 0; // Start with zero points
+            _context.Customers.Add(model);
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Loyalty member registered successfully!";
+            return RedirectToAction("Index", "Cashier");
         }
     }
 }

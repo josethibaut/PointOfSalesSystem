@@ -5,7 +5,7 @@
 namespace PointOfSalesSystem.Migrations
 {
     /// <inheritdoc />
-    public partial class AddCustomerIdToSales : Migration
+    public partial class UpdateSalesTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

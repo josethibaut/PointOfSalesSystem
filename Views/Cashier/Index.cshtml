@@ -1,90 +1,103 @@
 ﻿@model IEnumerable<PointOfSalesSystem.Models.Product>
-@{
-    var cart = ViewBag.CartItems as List<CartItem>;
-    var sale = ViewBag.Sale as PointOfSalesSystem.Models.Sale; // Retrieve the latest sale
-}
 
 <h2>Cashier Desk</h2>
+<a asp-action="Create" asp-controller="Loyalty" class="btn btn-warning">Register New Loyalty Member</a>
 
-<!-- Add to Cart Form -->
-<form asp-action="AddToCart" asp-controller="Cashier" method="post">
-    <label for="product">Select a Product:</label>
-    <select id="product" name="productId" class="form-control" required>
-        <option value="">-- Select Product --</option>
-        @foreach (var product in Model)
+<!-- ✅ Display Selected Customer and Sale ID -->
+@if (ViewBag.SelectedCustomer != null)
+{
+    <p><strong>Customer:</strong> @ViewBag.SelectedCustomer.Name</p>
+    <p><strong>Sale ID:</strong> @ViewBag.SaleId</p>
+}
+
+<!-- ✅ Select Customer -->
+<form asp-controller="Cashier" asp-action="SetCustomer" method="post">
+    <label>Select a Customer:</label>
+    <select name="customerId" class="form-control" required>
+        <option value="">-- Select Customer --</option>
+        @foreach (var customer in ViewBag.Customers)
         {
-            <option value="@product.ProductId">@product.Name - @product.Price.ToString("C")</option>
+            <option value="@customer.CustomerId">@customer.Name</option>
         }
     </select>
-
-    <label for="quantity">Quantity:</label>
-    <input type="number" name="quantity" min="1" value="1" class="form-control" required />
-
-    <button type="submit" class="btn btn-primary">Add to Cart</button>
+    <button type="submit" class="btn btn-primary">Confirm Customer</button>
 </form>
 
-<!-- Barcode Scan Form -->
-<form asp-action="ScanBarcode" asp-controller="Cashier" method="post">
-    <label for="barcode">Scan Barcode:</label>
-    <input type="text" id="barcode" name="barcode" class="form-control" required />
-    <button type="submit" class="btn btn-success">Scan</button>
-</form>
-
-<!-- Shopping Cart -->
-<h3>Shopping Cart</h3>
-@if (cart != null && cart.Count > 0)
+@if (ViewBag.SelectedCustomer != null)
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Product</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Subtotal</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in cart)
-            {
-                <tr>
-                    <td>@item.ProductName</td>
-                    <td>@item.Price.ToString("C")</td>
-                    <td>@item.Quantity</td>
-                    <td>@((item.Price * item.Quantity).ToString("C"))</td>
-                    <td>
-                        <form asp-action="RemoveFromCart" asp-controller="Cashier" method="post">
-                            <input type="hidden" name="productId" value="@item.ProductId" />
-                            <button type="submit" class="btn btn-danger">Remove</button>
-                        </form>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <h3>Proceed with Sales</h3>
 
-    <form asp-action="Checkout" asp-controller="Cashier" method="post">
-        <label for="paymentMethod">Select Payment Method:</label>
-        <select name="paymentMethod" class="form-control" required>
-            <option value="">-- Select Payment Method --</option>
-            <option value="Cash">Cash</option>
-            <option value="Card">Card</option>
-            <option value="Mobile Payment">Mobile Payment</option>
+    <!-- ✅ Add to Cart Form -->
+    <form asp-action="AddToCart" asp-controller="Cashier" method="post">
+        <input type="hidden" name="customerId" value="@ViewBag.SelectedCustomer.CustomerId" />
+        <input type="hidden" name="saleId" value="@ViewBag.SaleId" />
+
+        <label>Select a Product:</label>
+        <select name="productId" class="form-control" required>
+            <option value="">-- Select Product --</option>
+            @foreach (var product in Model)
+            {
+                <option value="@product.ProductId">@product.Name - @product.Price.ToString("C")</option>
+            }
         </select>
 
-        <button type="submit" class="btn btn-primary">Complete Sale</button>
+        <label>Quantity:</label>
+        <input type="number" name="quantity" min="1" value="1" class="form-control" required />
+
+        <button type="submit" class="btn btn-success">Add to Cart</button>
     </form>
 
-    <!-- Process VAT Return (Only if a sale exists) -->
-    @if (sale != null)
+    <!-- ✅ Shopping Cart -->
+    <h3>Shopping Cart</h3>
+    @if (ViewBag.CartItems != null && ViewBag.CartItems.Count > 0)
     {
-        <form asp-action="ProcessVatReturn" asp-controller="Cashier" method="post">
-            <input type="hidden" name="saleId" value="@sale.SaleId" />
-            <button type="submit" class="btn btn-warning">Process VAT Return</button>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Subtotal</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ViewBag.CartItems)
+                {
+                    <tr>
+                        <td>@item.ProductName</td>
+                        <td>@item.Price.ToString("C")</td>
+                        <td>@item.Quantity</td>
+                        <td>@((item.Price * item.Quantity).ToString("C"))</td>
+                        <td>
+                            <form asp-action="RemoveFromCart" asp-controller="Cashier" method="post">
+                                <input type="hidden" name="productId" value="@item.ProductId" />
+                                <button type="submit" class="btn btn-danger">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <!-- ✅ Checkout Form -->
+        <form asp-action="CompleteSale" asp-controller="Cashier" method="post">
+            <input type="hidden" name="customerId" value="@ViewBag.SelectedCustomer.CustomerId" />
+            <input type="hidden" name="saleId" value="@ViewBag.SaleId" />
+
+            <label for="paymentMethod">Select Payment Method:</label>
+            <select name="paymentMethod" class="form-control" required>
+                <option value="">-- Select Payment Method --</option>
+                <option value="Cash">Cash</option>
+                <option value="Card">Card</option>
+                <option value="Mobile Payment">Mobile Payment</option>
+            </select>
+
+            <button type="submit" class="btn btn-primary">Complete Sale</button>
         </form>
     }
-}
-else
-{
-    <p>No items in cart.</p>
+    else
+    {
+        <p>No items in the cart.</p>
+    }
 }

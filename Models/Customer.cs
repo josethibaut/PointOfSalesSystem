@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PointOfSalesSystem.Models
+namespace PointOfSalesSystem.Models  // 👈 Ensure this namespace matches your project
 {
     public class Customer
     {
@@ -11,8 +13,8 @@ namespace PointOfSalesSystem.Models
         [Required]
         public string Name { get; set; }
 
-        public int LoyaltyPoints { get; set; } = 0;
+        public int? LoyaltyPoints { get; set; }
 
-        public List<LoyaltyTransaction> LoyaltyTransactions { get; set; } = new List<LoyaltyTransaction>();
+        public virtual List<LoyaltyTransaction> LoyaltyTransactions { get; set; } = new List<LoyaltyTransaction>();
     }
 }
